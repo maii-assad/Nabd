@@ -1,0 +1,5 @@
+/* If not using Tailwind's build process, import the compiled CSS instead: */
+@import 'tailwindcss/base.css';
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities.css';
+
