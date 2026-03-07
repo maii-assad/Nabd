@@ -8,6 +8,7 @@ import ForgotPasswordForm from './components/ForgotPasswordForm';
 import OtpVerificationForm from './components/OtpVerificationForm';
 import ResetPasswordForm from './components/ResetPasswordForm';
 import SuccessScreen from './components/SuccessScreen';
+import Dashboard from './components/dashboard/Dashboard';
 import { Loader2 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -59,16 +60,22 @@ const App: React.FC = () => {
           <ResetPasswordForm
             email={authState.email}
             otp={authState.otp || ''}
-            onContinue={() => navigateTo(AuthStep.SUCCESS)}
+            onContinue={() => navigateTo(AuthStep.DASHBOARD)}
             onBack={() => navigateTo(AuthStep.VERIFY_OTP)}
           />
         );
       case AuthStep.SUCCESS:
         return <SuccessScreen onBackToLogin={() => navigateTo(AuthStep.LOGIN)} />;
+      case AuthStep.DASHBOARD:
+        return <Dashboard />;
       default:
         return <LoginForm onForgotPassword={() => navigateTo(AuthStep.FORGOT_PASSWORD)} />;
     }
   };
+
+  if (authState.step === AuthStep.DASHBOARD) {
+    return renderForm();
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4 md:p-8 bg-slate-50">
