@@ -8,7 +8,11 @@ import AppointmentTrendChart from './charts/AppointmentTrendChart';
 import DepartmentUsageChart from './charts/DepartmentUsageChart';
 import { AlertStack, PatientFeed, AppointmentSummary } from './widgets/InfoWidgets';
 
-const Dashboard = () => {
+interface DashboardProps {
+    onLogout?: () => void;
+}
+
+const Dashboard = ({ onLogout }: DashboardProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [userName, setUserName] = useState<string>('User');
     const [currentDate, setCurrentDate] = useState<string>('');
@@ -90,7 +94,7 @@ const Dashboard = () => {
                 />
             )}
 
-            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onLogout={() => { onLogout?.(); }} />
             <div className="flex-1 flex flex-col h-screen overflow-hidden">
                 <TopBar onMenuClick={() => setIsSidebarOpen(true)} />
                 <main className="flex-1 overflow-y-auto p-4 md:p-8">

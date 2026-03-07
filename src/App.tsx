@@ -70,7 +70,7 @@ const App: React.FC = () => {
       case AuthStep.SUCCESS:
         return <SuccessScreen onBackToLogin={() => navigateTo(AuthStep.LOGIN)} />;
       case AuthStep.DASHBOARD:
-        return <Dashboard />;
+        return <Dashboard onLogout={() => navigateTo(AuthStep.LOGIN)} />;
       default:
         return <LoginForm
           onForgotPassword={() => navigateTo(AuthStep.FORGOT_PASSWORD)}

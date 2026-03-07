@@ -13,9 +13,10 @@ import {
 interface SidebarProps {
     isOpen: boolean;
     onClose: () => void;
+    onLogout: () => void;
 }
 
-const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+const Sidebar = ({ isOpen, onClose, onLogout }: SidebarProps) => {
     const navItems = [
         { icon: LayoutDashboard, label: 'Dashboard', active: true },
         { icon: Users, label: 'User Management', active: false },
@@ -49,7 +50,14 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 ))}
             </div>
 
-            <button className="flex flex-col items-center justify-center w-full py-4 opacity-60 hover:opacity-100 hover:text-red-300 transition-colors mt-auto">
+            <button
+                onClick={() => {
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    onLogout();
+                }}
+                className="flex flex-col items-center justify-center w-full py-4 opacity-60 hover:opacity-100 hover:text-red-300 transition-colors mt-auto cursor-pointer"
+            >
                 <LogOut size={26} strokeWidth={1.5} />
                 <span className="text-[10px] uppercase font-bold tracking-widest mt-1.5">Log out</span>
             </button>
