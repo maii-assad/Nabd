@@ -2,9 +2,10 @@ import { Search, Bell, Plus, ChevronDown, Menu } from 'lucide-react';
 
 interface TopBarProps {
     onMenuClick: () => void;
+    onAddUserClick?: () => void;
 }
 
-const TopBar = ({ onMenuClick }: TopBarProps) => {
+const TopBar = ({ onMenuClick, onAddUserClick }: TopBarProps) => {
     return (
         <header className="px-4 md:px-10 py-4 md:py-6 flex items-center justify-between border-b border-slate-100 bg-white sticky top-0 z-10 w-full overflow-hidden">
             <div className="flex items-center gap-4 md:gap-12 flex-1 min-w-0">
@@ -38,7 +39,10 @@ const TopBar = ({ onMenuClick }: TopBarProps) => {
 
                 <div className="w-px h-6 md:h-8 bg-slate-200 mx-0 md:mx-1"></div>
 
-                <button className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-xl font-bold shadow-[0_4px_14px_rgba(37,99,235,0.2)] transition-all active:scale-95">
+                <button
+                    onClick={onAddUserClick}
+                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-xl font-bold shadow-[0_4px_14px_rgba(37,99,235,0.2)] transition-all active:scale-95"
+                >
                     <Plus size={18} />
                     <span className="hidden md:inline">Add New User</span>
                     <ChevronDown size={16} className="ml-0 md:ml-1 opacity-70 hidden sm:block" />
