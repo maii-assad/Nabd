@@ -81,11 +81,11 @@ const TopBar = ({ onMenuClick, onAddUserClick }: TopBarProps) => {
                                 </button>
                             </div>
                             <div className="flex flex-col text-slate-400 text-sm font-medium bg-slate-50">
-                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-slate-100 transition-colors">Doctor</button>
-                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-slate-100 transition-colors">Nurse</button>
-                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-slate-100 transition-colors">Lab Technician</button>
-                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-slate-100 transition-colors">Radiologist</button>
-                                <button className="w-full py-2.5 px-6 text-left hover:bg-slate-100 transition-colors">Pharmacist</button>
+                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-blue-500 hover:text-white transition-colors">Doctor</button>
+                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-blue-500 hover:text-white transition-colors">Nurse</button>
+                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-blue-500 hover:text-white transition-colors">Lab Technician</button>
+                                <button className="w-full py-2.5 px-6 text-left border-b border-slate-200 hover:bg-blue-500 hover:text-white transition-colors">Radiologist</button>
+                                <button className="w-full py-2.5 px-6 text-left hover:bg-blue-500 hover:text-white transition-colors">Pharmacist</button>
                             </div>
                         </div>
                     )}
