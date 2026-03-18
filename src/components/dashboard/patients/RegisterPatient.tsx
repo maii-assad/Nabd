@@ -1,12 +1,35 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown } from 'lucide-react';
+import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight } from 'lucide-react';
 import MedicalHistoryForm from './MedicalHistoryForm';
 import type { MedicalRecord } from './MedicalHistoryForm';
+import PersonalInfoForm from './PersonalInfoForm';
+import type { PersonalInfo } from './PersonalInfoForm';
+import AllergiesForm from './AllergiesForm';
+import type { AllergyRecord } from './AllergiesForm';
+import ChronicDiseasesForm from './ChronicDiseasesForm';
+import type { ChronicDiseaseRecord } from './ChronicDiseasesForm';
 
 const RegisterPatient = () => {
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        dateOfBirth: '',
+        gender: '1',
+        nationalId: '',
+        phoneNumber: '',
+        email: '',
+        address: '',
+        emergencyContactName: '',
+        emergencyContactPhone: '',
+        bloodGroup: '1'
+    });
     const [medicalRecords, setMedicalRecords] = useState<MedicalRecord[]>([]);
+    const [allergyRecords, setAllergyRecords] = useState<AllergyRecord[]>([]);
+    const [chronicDiseaseRecords, setChronicDiseaseRecords] = useState<ChronicDiseaseRecord[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isStaffOpen, setIsStaffOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Close dropdown when clicking outside
@@ -22,6 +45,22 @@ const RegisterPatient = () => {
 
     const handleAddRecord = (record: MedicalRecord) => {
         setMedicalRecords([...medicalRecords, record]);
+    };
+
+    const handleAddAllergy = (record: AllergyRecord) => {
+        setAllergyRecords([...allergyRecords, record]);
+    };
+
+    const handleRemoveAllergy = (index: number) => {
+        setAllergyRecords(allergyRecords.filter((_, i) => i !== index));
+    };
+
+    const handleAddChronicDisease = (record: ChronicDiseaseRecord) => {
+        setChronicDiseaseRecords([...chronicDiseaseRecords, record]);
+    };
+
+    const handleRemoveChronicDisease = (index: number) => {
+        setChronicDiseaseRecords(chronicDiseaseRecords.filter((_, i) => i !== index));
     };
 
     const steps = [
@@ -64,20 +103,54 @@ const RegisterPatient = () => {
                         </button>
 
                         {isDropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-slate-100 py-2 z-50 overflow-hidden">
+                            <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-slate-100 py-2 z-50 overflow-hidden">
+                                {/* Patient option */}
                                 <button
                                     onClick={() => {
                                         setIsDropdownOpen(false);
+                                        setIsStaffOpen(false);
                                     }}
-                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white flex flex-col transition-colors"
+                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-2"
                                 >
                                     <span>Patient</span>
                                 </button>
 
-                                <button className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white flex flex-col transition-colors border-t border-slate-50">
+                                {/* Divider */}
+                                <div className="border-t border-slate-100 my-1" />
+
+                                {/* Hospital Staff expandable */}
+                                <button
+                                    onClick={() => setIsStaffOpen(!isStaffOpen)}
+                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-between"
+                                >
                                     <span>Hospital Staff</span>
-                                    <span className="text-[10px] opacity-70 font-medium">Doctor, Nurse, Admin</span>
+                                    <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${isStaffOpen ? 'rotate-90' : ''}`} />
                                 </button>
+
+                                {/* Staff sub-options */}
+                                {isStaffOpen && (
+                                    <div className="bg-slate-50 border-t border-slate-100">
+                                        {[
+                                            { label: 'Doctor', desc: 'Physician / Specialist' },
+                                            { label: 'Nurse', desc: 'RN / LPN / NP' },
+                                            { label: 'Admin', desc: 'Administrative staff' },
+                                            { label: 'Pharmacist', desc: 'Pharmacy staff' },
+                                            { label: 'Lab Technician', desc: 'Laboratory staff' },
+                                        ].map((role) => (
+                                            <button
+                                                key={role.label}
+                                                onClick={() => {
+                                                    setIsDropdownOpen(false);
+                                                    setIsStaffOpen(false);
+                                                }}
+                                                className="w-full text-left pl-7 pr-4 py-2 hover:bg-blue-600 hover:text-white transition-colors group"
+                                            >
+                                                <span className="text-sm font-semibold text-slate-700 group-hover:text-white block">{role.label}</span>
+                                                <span className="text-[11px] text-slate-400 group-hover:text-blue-100">{role.desc}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -94,8 +167,8 @@ const RegisterPatient = () => {
                         <div className="flex items-center justify-center mb-12 relative max-w-3xl mx-auto">
                             {/* Connecting lines */}
                             <div className="absolute top-5 left-8 right-8 h-[2px] bg-slate-200 -z-10 flex">
-                                <div className="h-full bg-green-500 w-1/3 transition-all duration-300"></div>
-                                <div className={`h-full bg-slate-200 w-2/3 transition-all duration-300`}></div>
+                                <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}></div>
+                                <div className={`h-full bg-slate-200 transition-all duration-300`} style={{ width: `${(1 - (step - 1) / (steps.length - 1)) * 100}%` }}></div>
                             </div>
 
                             {steps.map((s) => {
@@ -123,17 +196,31 @@ const RegisterPatient = () => {
 
                     {/* Step Content */}
                     <div className="mb-8">
+                        {step === 1 && (
+                            <PersonalInfoForm
+                                info={personalInfo}
+                                onChange={setPersonalInfo}
+                            />
+                        )}
                         {step === 2 && (
                             <MedicalHistoryForm
                                 records={medicalRecords}
                                 onAddRecord={handleAddRecord}
                             />
                         )}
-                        {/* Add other steps here if needed */}
-                        {step !== 2 && (
-                            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-                                This step content is not yet implemented. Please view Step 2 for the requested changes.
-                            </div>
+                        {step === 3 && (
+                            <AllergiesForm
+                                records={allergyRecords}
+                                onAddRecord={handleAddAllergy}
+                                onRemoveRecord={handleRemoveAllergy}
+                            />
+                        )}
+                        {step === 4 && (
+                            <ChronicDiseasesForm
+                                records={chronicDiseaseRecords}
+                                onAddRecord={handleAddChronicDisease}
+                                onRemoveRecord={handleRemoveChronicDisease}
+                            />
                         )}
                     </div>
 
