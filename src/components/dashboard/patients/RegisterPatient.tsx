@@ -55,7 +55,6 @@ const RegisterPatient = () => {
     const handleRemoveAllergy = (index: number) => {
         setAllergyRecords(allergyRecords.filter((_, i) => i !== index));
     };
-
     const steps = [
         { num: 1, label: 'Personal Info' },
         { num: 2, label: 'Medical History' },
