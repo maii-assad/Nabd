@@ -4,6 +4,7 @@ import MedicalHistoryForm from './MedicalHistoryForm';
 import type { MedicalRecord } from './MedicalHistoryForm';
 import PersonalInfoForm from './PersonalInfoForm';
 import type { PersonalInfo } from './PersonalInfoForm';
+
 const RegisterPatient = () => {
     const [step, setStep] = useState(1);
     const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
