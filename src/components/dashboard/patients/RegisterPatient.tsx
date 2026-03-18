@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown } from 'lucide-react';
+import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight } from 'lucide-react';
 import MedicalHistoryForm from './MedicalHistoryForm';
 import type { MedicalRecord } from './MedicalHistoryForm';
 import PersonalInfoForm from './PersonalInfoForm';
@@ -29,6 +29,7 @@ const RegisterPatient = () => {
     const [allergyRecords, setAllergyRecords] = useState<AllergyRecord[]>([]);
     const [chronicDiseaseRecords, setChronicDiseaseRecords] = useState<ChronicDiseaseRecord[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isStaffOpen, setIsStaffOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Close dropdown when clicking outside
@@ -102,20 +103,54 @@ const RegisterPatient = () => {
                         </button>
 
                         {isDropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-slate-100 py-2 z-50 overflow-hidden">
+                            <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-slate-100 py-2 z-50 overflow-hidden">
+                                {/* Patient option */}
                                 <button
                                     onClick={() => {
                                         setIsDropdownOpen(false);
+                                        setIsStaffOpen(false);
                                     }}
-                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white flex flex-col transition-colors"
+                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-2"
                                 >
                                     <span>Patient</span>
                                 </button>
 
-                                <button className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white flex flex-col transition-colors border-t border-slate-50">
+                                {/* Divider */}
+                                <div className="border-t border-slate-100 my-1" />
+
+                                {/* Hospital Staff expandable */}
+                                <button
+                                    onClick={() => setIsStaffOpen(!isStaffOpen)}
+                                    className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center justify-between"
+                                >
                                     <span>Hospital Staff</span>
-                                    <span className="text-[10px] opacity-70 font-medium">Doctor, Nurse, Admin</span>
+                                    <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${isStaffOpen ? 'rotate-90' : ''}`} />
                                 </button>
+
+                                {/* Staff sub-options */}
+                                {isStaffOpen && (
+                                    <div className="bg-slate-50 border-t border-slate-100">
+                                        {[
+                                            { label: 'Doctor', desc: 'Physician / Specialist' },
+                                            { label: 'Nurse', desc: 'RN / LPN / NP' },
+                                            { label: 'Admin', desc: 'Administrative staff' },
+                                            { label: 'Pharmacist', desc: 'Pharmacy staff' },
+                                            { label: 'Lab Technician', desc: 'Laboratory staff' },
+                                        ].map((role) => (
+                                            <button
+                                                key={role.label}
+                                                onClick={() => {
+                                                    setIsDropdownOpen(false);
+                                                    setIsStaffOpen(false);
+                                                }}
+                                                className="w-full text-left pl-7 pr-4 py-2 hover:bg-blue-600 hover:text-white transition-colors group"
+                                            >
+                                                <span className="text-sm font-semibold text-slate-700 group-hover:text-white block">{role.label}</span>
+                                                <span className="text-[11px] text-slate-400 group-hover:text-blue-100">{role.desc}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
