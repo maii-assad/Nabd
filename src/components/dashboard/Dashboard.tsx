@@ -8,6 +8,7 @@ import AppointmentTrendChart from './charts/AppointmentTrendChart';
 import DepartmentUsageChart from './charts/DepartmentUsageChart';
 import { AlertStack, PatientFeed, AppointmentSummary } from './widgets/InfoWidgets';
 import RegisterPatient from './patients/RegisterPatient';
+import RegisterStaff from './staff/RegisterStaff';
 
 interface DashboardProps {
     onLogout?: () => void;
@@ -19,6 +20,8 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
     const [currentDate, setCurrentDate] = useState<string>('');
     const [authError, setAuthError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<string>('dashboard');
+    const [registerMode, setRegisterMode] = useState<'patient' | 'staff'>('patient');
+    const [registerRole, setRegisterRole] = useState<string>('Doctor');
 
     useEffect(() => {
         // Handle date formatting
@@ -109,12 +112,20 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
             <div className="flex-1 flex flex-col h-screen overflow-hidden">
                 {activeTab !== 'users' && <TopBar
                     onMenuClick={() => setIsSidebarOpen(true)}
-                    onAddUserClick={() => setActiveTab('users')}
+                    onAddUserClick={(type, role) => {
+                        setActiveTab('users');
+                        setRegisterMode(type);
+                        if (role) setRegisterRole(role);
+                    }}
                 />}
 
                 {activeTab === 'users' ? (
                     <div className="flex-1 overflow-y-auto">
-                        <RegisterPatient />
+                        {registerMode === 'patient' ? (
+                            <RegisterPatient />
+                        ) : (
+                            <RegisterStaff initialRole={registerRole} />
+                        )}
                     </div>
                 ) : (
                     <main className="flex-1 overflow-y-auto p-4 md:p-8">

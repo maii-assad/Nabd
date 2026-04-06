@@ -9,6 +9,7 @@ import {
     LogOut,
     X
 } from 'lucide-react';
+import { logout as apiLogout } from '../../api/auth';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -54,10 +55,19 @@ const Sidebar = ({ isOpen, activeTab = 'dashboard', onClose, onLogout, onTabChan
             </nav>
 
             <button
-                onClick={() => {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
-                    onLogout();
+                onClick={async () => {
+                    try {
+                        const refreshToken = localStorage.getItem('refreshToken');
+                        if (refreshToken) {
+                            await apiLogout(refreshToken);
+                        }
+                    } catch (e) {
+                        console.error('Logout error', e);
+                    } finally {
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        onLogout();
+                    }
                 }}
                 className="flex flex-col items-center justify-center w-full py-3 opacity-60 hover:opacity-100 hover:text-red-300 transition-colors shrink-0 cursor-pointer"
             >
