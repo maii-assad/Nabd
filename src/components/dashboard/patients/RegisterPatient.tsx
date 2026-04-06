@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight } from 'lucide-react';
+import { Search, Bell, Plus, ArrowLeft, ArrowRight, Check, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
+import { registerPatient } from '../../../api/auth';
 import MedicalHistoryForm from './MedicalHistoryForm';
 import type { MedicalRecord } from './MedicalHistoryForm';
 import PersonalInfoForm from './PersonalInfoForm';
@@ -11,6 +12,9 @@ import type { ChronicDiseaseRecord } from './ChronicDiseasesForm';
 
 const RegisterPatient = () => {
     const [step, setStep] = useState(1);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+
     const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
         firstName: '',
         middleName: '',
@@ -73,6 +77,38 @@ const RegisterPatient = () => {
         { num: 3, label: 'Allergies' },
         { num: 4, label: 'Chronic Diseases' }
     ];
+
+    const handleSave = async () => {
+        setIsSubmitting(true);
+        setSubmitMessage(null);
+        try {
+            const payload = {
+                fullNameEnglish: [personalInfo.firstName, personalInfo.middleName, personalInfo.lastName].filter(Boolean).join(' '),
+                fullNameArabic: '',
+                nationalId: personalInfo.nationalId,
+                gender: parseInt(personalInfo.gender, 10) || 1,
+                dateOfBirth: personalInfo.dateOfBirth ? `${personalInfo.dateOfBirth}T00:00:00` : null,
+                email: personalInfo.email,
+                address: personalInfo.address,
+                city: '',
+                country: '',
+                phoneNumber: personalInfo.phoneNumber
+            };
+            const res = await registerPatient(payload);
+            if (res.isSuccess) {
+                setSubmitMessage({ type: 'success', text: 'Registration completed successfully' });
+                setTimeout(() => {
+                    // Reset form or redirect if needed
+                }, 2000);
+            } else {
+                setSubmitMessage({ type: 'error', text: res.message || 'Registration failed' });
+            }
+        } catch (err: any) {
+            setSubmitMessage({ type: 'error', text: err.message || 'Network error occurred' });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="flex flex-col h-full bg-slate-50 font-sans">
@@ -166,6 +202,13 @@ const RegisterPatient = () => {
                     {/* Header */}
                     <div className="mb-8 pl-2">
                         <h1 className="text-2xl font-extrabold text-slate-900 mb-8">Register New Patient</h1>
+
+                        {submitMessage && (
+                            <div className={`mb-8 p-4 rounded-xl text-sm font-semibold border ${submitMessage.type === 'success' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'
+                                }`}>
+                                {submitMessage.text}
+                            </div>
+                        )}
 
                         {/* Stepper */}
                         <div className="flex items-center justify-center mb-12 relative max-w-3xl mx-auto">
@@ -261,10 +304,11 @@ const RegisterPatient = () => {
                             </button>
                         ) : (
                             <button
-                                onClick={() => alert('Registration complete! Data ready to send to API.')}
-                                className="flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors shadow-[0_4px_14px_rgba(37,99,235,0.2)]"
+                                onClick={handleSave}
+                                disabled={isSubmitting}
+                                className="flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors shadow-[0_4px_14px_rgba(37,99,235,0.2)] disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                Save
+                                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Save'}
                             </button>
                         )}
                     </div>

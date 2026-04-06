@@ -3,7 +3,7 @@ import { Search, Bell, Plus, ChevronDown, Menu } from 'lucide-react';
 
 interface TopBarProps {
     onMenuClick: () => void;
-    onAddUserClick?: () => void;
+    onAddUserClick?: (type: 'patient' | 'staff', role?: string) => void;
 }
 
 const TopBar = ({ onMenuClick, onAddUserClick }: TopBarProps) => {
@@ -68,9 +68,12 @@ const TopBar = ({ onMenuClick, onAddUserClick }: TopBarProps) => {
                         <DropdownMenu
                             onPatientClick={() => {
                                 setIsDropdownOpen(false);
-                                if (onAddUserClick) onAddUserClick();
+                                if (onAddUserClick) onAddUserClick('patient');
                             }}
-                            onClose={() => setIsDropdownOpen(false)}
+                            onStaffClick={(role) => {
+                                setIsDropdownOpen(false);
+                                if (onAddUserClick) onAddUserClick('staff', role);
+                            }}
                         />
                     )}
                 </div>
@@ -79,7 +82,7 @@ const TopBar = ({ onMenuClick, onAddUserClick }: TopBarProps) => {
     );
 };
 
-const DropdownMenu = ({ onPatientClick, onClose }: { onPatientClick: () => void; onClose: () => void }) => {
+const DropdownMenu = ({ onPatientClick, onStaffClick }: { onPatientClick: () => void; onStaffClick: (role: string) => void }) => {
     const [isStaffOpen, setIsStaffOpen] = useState(false);
 
     return (
@@ -121,7 +124,7 @@ const DropdownMenu = ({ onPatientClick, onClose }: { onPatientClick: () => void;
                     ].map((role) => (
                         <button
                             key={role.label}
-                            onClick={onClose}
+                            onClick={() => onStaffClick(role.label)}
                             className="w-full text-left pl-7 pr-4 py-2 hover:bg-blue-600 hover:text-white transition-colors group"
                         >
                             <span className="text-sm font-semibold text-slate-700 group-hover:text-white block">{role.label}</span>
