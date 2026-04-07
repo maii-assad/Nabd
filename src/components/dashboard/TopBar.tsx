@@ -9,6 +9,7 @@ interface TopBarProps {
 }
 
 const TopBar = ({ title = 'Dashboard', searchPlaceholder = 'Search users...', onMenuClick, onAddUserClick }: TopBarProps) => {
+const TopBar = ({ title = 'Dashboard', onMenuClick, onAddUserClick }: TopBarProps) => {
     // No local state needed for Dropdown
 
     return (
