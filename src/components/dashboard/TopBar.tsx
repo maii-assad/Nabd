@@ -8,8 +8,7 @@ interface TopBarProps {
     onAddUserClick?: (type: 'patient' | 'staff', role?: string) => void;
 }
 
-const TopBar = ({ title = 'Dashboard', searchPlaceholder = 'Search users...', onMenuClick, onAddUserClick }: TopBarProps) => {
-const TopBar = ({ title = 'Dashboard', onMenuClick, onAddUserClick }: TopBarProps) => {
+    const TopBar = ({ title = 'Dashboard', searchPlaceholder = 'Search users...', onMenuClick, onAddUserClick }: TopBarProps) => {
     // No local state needed for Dropdown
 
     return (

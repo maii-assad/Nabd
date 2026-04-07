@@ -234,8 +234,6 @@ const UserManagementList = ({ onMenuClick, onAddUserClick }: UserManagementListP
                                                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${staff.status === 'Active'
                                                         ? 'bg-emerald-100 text-emerald-600'
                                                         : 'bg-slate-200 text-slate-500'
-                                                            ? 'bg-emerald-100 text-emerald-600'
-                                                            : 'bg-slate-200 text-slate-500'
                                                         }`}>
                                                         {staff.status}
                                                     </span>
@@ -292,11 +290,7 @@ const UserManagementList = ({ onMenuClick, onAddUserClick }: UserManagementListP
                                                 </td>
                                             </tr>
                                         ))
-                                        <tr>
-                                            <td colSpan={7} className="px-6 py-12 text-center text-slate-500 font-medium">
-                                                No patients found.
-                                            </td>
-                                        </tr>
+
                                     )}
                                 </tbody>
                             </table>
