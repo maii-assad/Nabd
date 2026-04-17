@@ -13,6 +13,7 @@ export const PATHS = {
   PATIENT_PROFILE: "/dashboard/users/patient",
   ADD_STAFF: "/dashboard/users/add-staff",
   ADD_PATIENT: "/dashboard/users/add-patient",
+  EDIT_STAFF: "/dashboard/users/staff/edit",   // ← NEW
   REPORTS: "/dashboard/reports",
   APPOINTMENTS: "/dashboard/appointments",
   DEPARTMENTS: "/dashboard/departments",
