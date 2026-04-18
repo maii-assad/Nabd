@@ -754,7 +754,7 @@ const PrescriptionsTab = ({ patient }: { patient: PatientProfile }) => {
 // ====================================================================
 //                    TAB: PLACEHOLDER
 // ====================================================================
-const PlaceholderTab = ({ title }: { title: string }) => (<div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-12 text-center"><div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4"><FileText className="w-8 h-8 text-slate-400" /></div><h3 className="text-xl font-extrabold text-slate-900 mb-2">{title}</h3><p className="text-slate-400 font-medium">This section is coming soon.</p></div>);
+//const PlaceholderTab = ({ title }: { title: string }) => (<div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-12 text-center"><div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4"><FileText className="w-8 h-8 text-slate-400" /></div><h3 className="text-xl font-extrabold text-slate-900 mb-2">{title}</h3><p className="text-slate-400 font-medium">This section is coming soon.</p></div>);
 
 // ====================================================================
 //                    MAIN COMPONENT

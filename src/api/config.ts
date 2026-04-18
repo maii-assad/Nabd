@@ -1,3 +1,4 @@
+// src/api/config.ts
 import type { ApiResponse } from '../types/api.types';
 
 export const BASE_URL = 'https://nabd.runasp.net/api';
